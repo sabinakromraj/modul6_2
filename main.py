@@ -70,7 +70,6 @@ def select_all(conn, table):
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM {table}")
     rows = cur.fetchall()
-
     return rows
 
 
@@ -187,32 +186,33 @@ if __name__ == "__main__":
         execute_sql(conn, create_pets_sql)
         execute_sql(conn, create_meals_sql)
 
-    pets_data = [
-        ("Czaruś", "cat", "8"),
-        ("Behemocik", "cat", "11"),
-        ("Celinka", "cat", "11"),
-        ("Lucynka", "dog", "2")
-    ]
+        pets_data = [
+            ("Czaruś", "cat", "8"),
+            ("Behemocik", "cat", "11"),
+            ("Celinka", "cat", "11"),
+            ("Lucynka", "dog", "2")
+        ]
 
-    meals_data = [
-        ("2023-09-12 20:00:00", "supper", "Wiejska Zagroda Kurczak z Kaczką", "45g"),
-        ("2023-09-12 20:00:00", "supper", "Wiejska Zagroda Kurczak z Kaczką", "55g"),
-        ("2023-09-12 20:00:00", "supper", "Wiejska Zagroda Kurczak z Kaczką", "50g"),
-        ("2023-09-12 20:00:00", "supper", "Fitmin Medium Light", "170g")
-    ]
+        meals_data = [
+            ("2023-09-12 20:00:00", "supper",
+             "Wiejska Zagroda Kurczak z Kaczką", "45g"),
+            ("2023-09-12 20:00:00", "supper",
+             "Wiejska Zagroda Kurczak z Kaczką", "55g"),
+            ("2023-09-12 20:00:00", "supper",
+             "Wiejska Zagroda Kurczak z Kaczką", "50g"),
+            ("2023-09-12 20:00:00", "supper", "Fitmin Medium Light", "170g")
+        ]
 
-    for pet_info, meal_info in zip(pets_data, meals_data):
-        p_id = add_pets(conn, pet_info)
-        meal_info = (p_id,) + meal_info
-        m_id = add_meals(conn, meal_info)
-        print(p_id, m_id)
+        for pet_info, meal_info in zip(pets_data, meals_data):
+            p_id = add_pets(conn, pet_info)
+            meal_info = (p_id,) + meal_info
+            m_id = add_meals(conn, meal_info)
+            print(p_id, m_id)
 
-    conn.commit()
+        select_all(conn, "meals")
+        select_where(conn, "pets", age="11")
+        update(conn, "meals", 1, amount="55g")
+        delete_where(conn, "meals", pet_food_name="Fitmin Medium Light")
+        delete_all(conn, "meals")
 
-    select_all(conn, "meals")
-    select_where(conn, "pets", age="11")
-    update(conn, "meals", 1, amount="55g")
-    delete_where(conn, "meals", pet_food_name="Fitmin Medium Light")
-    delete_all(conn, "meals")
-
-    conn.close()
+        conn.close()
