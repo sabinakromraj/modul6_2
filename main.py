@@ -209,10 +209,13 @@ if __name__ == "__main__":
             m_id = add_meals(conn, meal_info)
             print(p_id, m_id)
 
-        select_all(conn, "meals")
-        select_where(conn, "pets", age="11")
+        print(select_all(conn, "meals"))
+        print(select_where(conn, "pets", age="11"))
         update(conn, "meals", 1, amount="55g")
+        print(select_where(conn, "meals", id="1"))
         delete_where(conn, "meals", pet_food_name="Fitmin Medium Light")
+        print(select_all(conn, "meals"))
         delete_all(conn, "meals")
+        print(select_all(conn, "meals"))
 
         conn.close()
